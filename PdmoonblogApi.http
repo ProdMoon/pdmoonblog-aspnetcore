@@ -1,0 +1,6 @@
+@PdmoonblogApi_HostAddress = http://localhost:5124
+
+GET {{PdmoonblogApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
