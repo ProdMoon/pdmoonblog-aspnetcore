@@ -16,10 +16,10 @@ public class FileController : ControllerBase
 
     // POST: api/File/upload
     [HttpPost("upload")]
-    public async Task<IActionResult> UploadFileAsync([FromForm] IFormFile file)
+    public async Task<IActionResult> UploadFileAsync([FromForm] IFormFile file, [FromForm] string key)
     {
         await using var stream = file.OpenReadStream();
-        await _awsS3Service.UploadFileAsync(file.FileName, stream);
+        await _awsS3Service.UploadFileAsync(key, stream);
 
         return Ok();
     }
