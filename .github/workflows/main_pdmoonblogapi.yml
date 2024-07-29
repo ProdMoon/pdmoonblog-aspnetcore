@@ -31,15 +31,15 @@ jobs:
         username: ${{ secrets.AWS_SSH_USERNAME }}
         key: ${{ secrets.AWS_SSH_KEY }}
         source: ./publish/
-        target: /home/${{ secrets.SSH_USERNAME }}/aspnetcore-app/
+        target: /home/${{ secrets.AWS_SSH_USERNAME }}/aspnetcore-app/
 
     - name: Deploy to server
       uses: appleboy/ssh-action@v0.1.5
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
+        host: ${{ secrets.AWS_SSH_HOST }}
+        username: ${{ secrets.AWS_SSH_USERNAME }}
+        key: ${{ secrets.AWS_SSH_KEY }}
         script: |
           sudo systemctl stop kestrel-aspnetcore-app.service
-          sudo cp -r /home/${{ secrets.SSH_USERNAME }}/aspnetcore-app/* /var/www/aspnetcore-app/publish
+          sudo cp -r /home/${{ secrets.AWS_SSH_USERNAME }}/aspnetcore-app/* /var/www/aspnetcore-app/publish
           sudo systemctl start kestrel-aspnetcore-app.service
