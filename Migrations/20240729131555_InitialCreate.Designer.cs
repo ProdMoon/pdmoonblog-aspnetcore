@@ -12,8 +12,8 @@ using PdmoonblogApi.Models;
 namespace PdmoonblogApi.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20240616090310_InitIdentity")]
-    partial class InitIdentity
+    [Migration("20240729131555_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
