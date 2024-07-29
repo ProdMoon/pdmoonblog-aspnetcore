@@ -41,5 +41,5 @@ jobs:
         key: ${{ secrets.AWS_SSH_KEY }}
         script: |
           sudo systemctl stop kestrel-aspnetcore-app.service
-          sudo cp -r /home/${{ secrets.AWS_SSH_USERNAME }}/aspnetcore-app/* /var/www/aspnetcore-app/publish
+          sudo cp -r /home/${{ secrets.AWS_SSH_USERNAME }}/aspnetcore-app/* /var/www/aspnetcore-app/
           sudo systemctl start kestrel-aspnetcore-app.service
