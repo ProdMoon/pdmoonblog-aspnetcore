@@ -1,12 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using PdmoonblogApi.Models;
-using Amazon;
-using Amazon.Runtime;
-using Amazon.S3;
 using PdmoonblogApi.Interfaces;
 using PdmoonblogApi.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,12 +29,13 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 1;
 });
 
-// AWS S3
-var awsSettings = builder.Configuration.GetSection("AWS").Get<AwsSettings>() ?? throw new Exception("AWS settings not found");
-var awsCredentials = new BasicAWSCredentials(awsSettings.AccessKeyId, awsSettings.SecretAccessKey);
-var awsRegion = RegionEndpoint.GetBySystemName(awsSettings.Region);
-builder.Services.AddSingleton<IAmazonS3>(sp => new AmazonS3Client(awsCredentials, awsRegion));
-builder.Services.AddScoped<IAwsS3Service, AwsS3Service>();
+// File Service
+var fileServiceBaseDirectory = "/home/pi/pdmoonblogfiles";
+if (builder.Environment.IsDevelopment())
+{
+    fileServiceBaseDirectory = "/Users/moonjunho/Downloads";
+}
+builder.Services.AddScoped<IFileService>(sp => new FileService(fileServiceBaseDirectory));
 
 builder.Services.AddControllers();
 

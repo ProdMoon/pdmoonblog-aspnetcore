@@ -7,11 +7,12 @@ namespace PdmoonblogApi.Controllers;
 [Route("api/[controller]")]
 public class FileController : ControllerBase
 {
-    private readonly IAwsS3Service _awsS3Service;
+    private readonly IFileService _fileService;
 
-    public FileController(IAwsS3Service awsS3Service)
+
+    public FileController(IFileService fileService)
     {
-        _awsS3Service = awsS3Service;
+        _fileService = fileService;
     }
 
     // POST: api/File/upload
@@ -19,7 +20,7 @@ public class FileController : ControllerBase
     public async Task<IActionResult> UploadFileAsync([FromForm] IFormFile file, [FromForm] string key)
     {
         await using var stream = file.OpenReadStream();
-        await _awsS3Service.UploadFileAsync(key, stream);
+        await _fileService.UploadFileAsync(key, stream);
 
         return Ok();
     }
@@ -28,17 +29,8 @@ public class FileController : ControllerBase
     [HttpGet("download/{key}")]
     public async Task<IActionResult> DownloadFileAsync(string key)
     {
-        var stream = await _awsS3Service.DownloadFileAsync(key);
+        var stream = await _fileService.DownloadFileAsync(key);
 
         return File(stream, "application/octet-stream");
-    }
-
-    // GET: api/File/list
-    [HttpGet("list")]
-    public async Task<IActionResult> ListFilesAsync()
-    {
-        var fileKeys = await _awsS3Service.ListFilesAsync();
-
-        return Ok(fileKeys);
     }
 }

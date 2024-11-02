@@ -1,8 +1,7 @@
 namespace PdmoonblogApi.Interfaces;
 
-public interface IAwsS3Service
+public interface IFileService
 {
     Task UploadFileAsync(string key, Stream inputStream);
     Task<Stream> DownloadFileAsync(string key);
-    Task<List<string>> ListFilesAsync();
 }
