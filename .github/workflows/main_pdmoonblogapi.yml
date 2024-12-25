@@ -60,4 +60,4 @@ jobs:
           username: ${{ secrets.RASPI_SSH_USERNAME }}
           key: ${{ secrets.RASPI_SSH_KEY }}
           script: |
-            sudo systemctl restart kestrel-aspnetcore-app.service
+            sudo systemctl restart pdmoonblog-api.service
