@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v2
@@ -25,39 +25,43 @@ jobs:
         run: dotnet publish -c Release -o ./publish
 
       - name: Clean remote directory
-        uses: appleboy/ssh-action@v0.1.5
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.RASPI_SSH_HOST }}
           username: ${{ secrets.RASPI_SSH_USERNAME }}
-          key: ${{ secrets.RASPI_SSH_KEY }}
+          password: ${{ secrets.RASPI_SSH_PASSWORD }}
+          port: 22
           script: |
             if [ -d "/home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/aspnetcore-app" ]; then
                 rm -rf /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/aspnetcore-app
             fi
 
       - name: Copy files via SSH
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.RASPI_SSH_HOST }}
           username: ${{ secrets.RASPI_SSH_USERNAME }}
-          key: ${{ secrets.RASPI_SSH_KEY }}
+          password: ${{ secrets.RASPI_SSH_PASSWORD }}
+          port: 22
           source: ./publish/
           target: /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/aspnetcore-app/
 
       - name: Copy existing appsecrets.json file
-        uses: appleboy/ssh-action@v0.1.5
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.RASPI_SSH_HOST }}
           username: ${{ secrets.RASPI_SSH_USERNAME }}
-          key: ${{ secrets.RASPI_SSH_KEY }}
+          password: ${{ secrets.RASPI_SSH_PASSWORD }}
+          port: 22
           script: |
             cp /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/appsecrets.json /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/aspnetcore-app/publish/appsecrets.json
 
       - name: Deploy to server
-        uses: appleboy/ssh-action@v0.1.5
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.RASPI_SSH_HOST }}
           username: ${{ secrets.RASPI_SSH_USERNAME }}
-          key: ${{ secrets.RASPI_SSH_KEY }}
+          password: ${{ secrets.RASPI_SSH_PASSWORD }}
+          port: 22
           script: |
             sudo systemctl restart pdmoonblog-api.service
