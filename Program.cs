@@ -31,7 +31,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 // File Service
-var fileServiceBaseDirectory = "/home/pi/pdmoonblogfiles";
+var fileServiceBaseDirectory = "/home/pi/source/pdmoonblogfiles";
 if (builder.Environment.IsDevelopment())
 {
     fileServiceBaseDirectory = "/Users/moonjunho/Downloads";
