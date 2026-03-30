@@ -31,8 +31,8 @@ jobs:
           username: ${{ secrets.RASPI_SSH_USERNAME }}
           key: ${{ secrets.RASPI_SSH_KEY }}
           script: |
-            if [ -d "/home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/aspnetcore-app" ]; then
-                rm -rf /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/aspnetcore-app
+            if [ -d "/home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/aspnetcore-app" ]; then
+                rm -rf /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/aspnetcore-app
             fi
 
       - name: Copy files via SSH
@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.RASPI_SSH_USERNAME }}
           key: ${{ secrets.RASPI_SSH_KEY }}
           source: ./publish/
-          target: /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/aspnetcore-app/
+          target: /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/aspnetcore-app/
 
       - name: Copy existing appsecrets.json file
         uses: appleboy/ssh-action@v0.1.5
@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.RASPI_SSH_USERNAME }}
           key: ${{ secrets.RASPI_SSH_KEY }}
           script: |
-            cp /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/appsecrets.json /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/aspnetcore-app/publish/appsecrets.json
+            cp /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/appsecrets.json /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/aspnetcore-app/publish/appsecrets.json
 
       - name: Deploy to server
         uses: appleboy/ssh-action@v0.1.5
